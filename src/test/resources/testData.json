@@ -1,0 +1,29 @@
+{
+  "basePageUrl": "https://vk.com/",
+  "phoneNumber": "+375291660762",
+  "password": "PuV6j_.2&$m9h?UYY",
+
+  "apiBaseURL": "https://api.vk.com/method/",
+  "basePathToCreateNewPostOnTheWall": "wall.post",
+  "ownerId": 627657327,
+  "accessToken": "vk1.a.yJFJ7cO_Fjgl7xgb8gSM3zZQi0q3NSOL1BuXhgAecjUVuF6ZWd_qVgxKy8hUu0gzpMFEwwSjSPwErrExU5Q4Xjmhf-se-6w0iet6DWlZqZaRLWD-4jXRMd4EZn_jsmt19Beopsp0XjbSSSpSufQUVLcfnh4OAgyWNZW-n5Ee9Z-un3Ade9Y_mf8GqS9sWJ3m",
+  "VKVersion": "5.131",
+  "lengthOfRandomlyGeneratedText": 5,
+
+  "basePathToEditPostOnTheWall": "wall.edit",
+  "textToEditPost": "(edited)",
+
+  "basePathToGetAddressForPhotosUpload": "photos.getWallUploadServer",
+  "basePathToSavePhotoOnWall": "photos.saveWallPhoto",
+  "pathToUploadedPhoto": "/src/test/resources/pic_to_upload.jpg",
+  "pathToDownloadedPhoto": "download_pic.jpg",
+  "pathToResultPhoto": "result_pic.jpg",
+  "picUrl": "https://sun9-35.userapi.com/impg/O9DJG1aL1qg8y9UvZbBszq7EINONNcrXLIpVZA/jTtFONie_lY.jpg?size=1080x1664&quality=96&sign=804ba7b51c378d8f17b4d2f92b3b2c48&type=album",
+
+  "basePathToCreateCommentOnPost": "wall.createComment",
+
+  "basePathToCheckIfThePostIsLiked": "likes.isLiked",
+  "typeOfLikedItem": "post",
+
+  "basePathToDeletePost": "wall.delete"
+}
