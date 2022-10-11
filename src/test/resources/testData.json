@@ -1,7 +1,7 @@
 {
   "basePageUrl": "https://vk.com/",
-  "phoneNumber": "+375291660762",
-  "password": "PuV6j_.2&$m9h?UYY",
+  "phoneNumber": "",
+  "password": "",
 
   "apiBaseURL": "https://api.vk.com/method/",
   "basePathToCreateNewPostOnTheWall": "wall.post",
@@ -17,8 +17,6 @@
   "basePathToSavePhotoOnWall": "photos.saveWallPhoto",
   "pathToUploadedPhoto": "/src/test/resources/pic_to_upload.jpg",
   "pathToDownloadedPhoto": "download_pic.jpg",
-  "pathToResultPhoto": "result_pic.jpg",
-  "picUrl": "https://sun9-35.userapi.com/impg/O9DJG1aL1qg8y9UvZbBszq7EINONNcrXLIpVZA/jTtFONie_lY.jpg?size=1080x1664&quality=96&sign=804ba7b51c378d8f17b4d2f92b3b2c48&type=album",
 
   "basePathToCreateCommentOnPost": "wall.createComment",
 

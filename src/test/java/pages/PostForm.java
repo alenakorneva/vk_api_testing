@@ -5,20 +5,20 @@ import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 
-public class MyProfilePage extends Form {
+public class PostForm extends Form {
 
-    private String textInThePost = "//div[contains(@id, '%d')]//div[contains(@class, 'wall_post_text')]";
-    private String postLocatorToCheckUser = "//div[contains(@id, 'post') and contains(@id, '%d')]";
-    private String photoInThePost = "//div[contains(@id, '%d') and contains (@class, 'wall_post_cont')]//a";
-    private ILabel openedPhotoInThePost = AqualityServices.getElementFactory().getLabel(By.xpath("//div[@id='pv_photo']/img"), "openedPhotoInThePost");
-    private ILabel closePhotoButton = AqualityServices.getElementFactory().getLabel(By.xpath("//div[contains(@class, 'pv_close_btn')]"), "closePhotoButton");
-    private String commentOnThePost = "//div[contains(@id, '%s') and contains(@id, '%d')]//div[contains(@class, 'wall_reply_text')]";
-    private String likeIcon = "//div[contains(@class, '%s') and contains(@class, '%d')]//div[@data-reaction-set-id='reactions']//span[contains(@class, 'PostBottomAction__icon')]";
-    private String post = "//div[@id='post%s_%d']";
-    private String showNextCommentButton = "//a[contains(@href, '%s') and contains(@href, '%d')]//span[contains(@class, 'js-replies_next_label')]";
+    private final String textInThePost = "//div[contains(@id, '%d')]//div[contains(@class, 'wall_post_text')]";
+    private final String postLocatorToCheckUser = "//div[contains(@id, 'post') and contains(@id, '%d')]";
+    private final String photoInThePost = "//div[contains(@id, '%d') and contains (@class, 'wall_post_cont')]//a";
+    private final ILabel openedPhotoInThePost = AqualityServices.getElementFactory().getLabel(By.xpath("//div[@id='pv_photo']/img"), "openedPhotoInThePost");
+    private final ILabel closePhotoButton = AqualityServices.getElementFactory().getLabel(By.xpath("//div[contains(@class, 'pv_close_btn')]"), "closePhotoButton");
+    private final String commentOnThePost = "//div[contains(@id, '%s') and contains(@id, '%d')]//div[contains(@class, 'wall_reply_text')]";
+    private final String likeIcon = "//div[contains(@class, '%s') and contains(@class, '%d')]//div[@data-reaction-set-id='reactions']//span[contains(@class, 'PostBottomAction__icon')]";
+    private final String post = "//div[@id='post%s_%d']";
+    private final String showNextCommentButton = "//a[contains(@href, '%s') and contains(@href, '%d')]//span[contains(@class, 'js-replies_next_label')]";
 
-    public MyProfilePage() {
-        super(By.xpath("//div[@id='page_info_wrap']"), "pageInfo");
+    public PostForm(String owner_id, int post_id) {
+        super(By.xpath(String.format("//div[@id='post%s_%d']", owner_id, post_id)), "post");
     }
 
     public String getTextFromThePost(int postId) {
@@ -30,11 +30,16 @@ public class MyProfilePage extends Form {
                 .getAttribute("id");
     }
 
-    public String getPhotoURL(int postId) {
+    public void clickOnPhotoInThePost(int postId) {
         AqualityServices.getElementFactory().getLabel(By.xpath(String.format(photoInThePost, postId)), "photoInThePost").click();
-        String photoUrl = openedPhotoInThePost.getAttribute("src");
+    }
+
+    public String getUrlOfPhoto() {
+        return openedPhotoInThePost.getAttribute("src");
+    }
+
+    public void closePhoto() {
         closePhotoButton.click();
-        return photoUrl;
     }
 
     public String getCommentOnThePost(String ownerId, int postId) {

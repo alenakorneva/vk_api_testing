@@ -11,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import pages.FeedPage;
 import pages.LoginFormWithPassword;
 import pages.LoginFormWithPhoneNumber;
-import pages.MyProfilePage;
+import pages.PostForm;
 import requests.APIApplicationRequest;
 import steps.StepsGenerator;
 import utils.RandomlyGeneratedUtils;
@@ -23,7 +23,7 @@ public class VKTest extends CommonConditions {
     LoginFormWithPhoneNumber loginFormWithPhoneNumber = new LoginFormWithPhoneNumber();
     LoginFormWithPassword loginFormWithPassword = new LoginFormWithPassword();
     FeedPage feedPage = new FeedPage();
-    MyProfilePage myProfilePage = new MyProfilePage();
+    PostForm postForm;
 
     @Test
     public void interactionsWithVKWallTest() {
@@ -42,11 +42,13 @@ public class VKTest extends CommonConditions {
                 Integer.parseInt(jsonSettings.getValue("/lengthOfRandomlyGeneratedText").toString()));
         PostId postId = APIApplicationRequest.createNewPostOnTheWall(randomTextToCreatePost);
 
+        postForm = new PostForm(jsonSettings.getValue("/ownerId").toString(), postId.getResponse().getPost_id());
+
         logger.info("Step 5: without page refreshment make sure that there is post with set text from appropriate user.");
         SoftAssert softAssertForPostTextAndUser = new SoftAssert();
-        softAssertForPostTextAndUser.assertEquals(randomTextToCreatePost, myProfilePage.getTextFromThePost(postId.getResponse().getPost_id()),
+        softAssertForPostTextAndUser.assertEquals(randomTextToCreatePost, postForm.getTextFromThePost(postId.getResponse().getPost_id()),
                 "Text in the post isn't similar to the text in the POST request.");
-        softAssertForPostTextAndUser.assertTrue(myProfilePage.getUserOfPost(postId.getResponse().getPost_id()).contains(jsonSettings.getValue("/ownerId").toString()),
+        softAssertForPostTextAndUser.assertTrue(postForm.getUserOfPost(postId.getResponse().getPost_id()).contains(jsonSettings.getValue("/ownerId").toString()),
                 "User who has sent post isn't correct.");
         softAssertForPostTextAndUser.assertAll("Text and user in the post aren't correct.");
 
@@ -61,10 +63,9 @@ public class VKTest extends CommonConditions {
 
         logger.info("Step 7: without page refreshment make sure that the text has changed and there is a picture similar to required.");
         SoftAssert softAssertForChangedTextAndPicture = new SoftAssert();
-        softAssertForChangedTextAndPicture.assertEquals(randomTextToEditPost, myProfilePage.getTextFromThePost(postId.getResponse().getPost_id()),
+        softAssertForChangedTextAndPicture.assertEquals(randomTextToEditPost, postForm.getTextFromThePost(postId.getResponse().getPost_id()),
                 "Text in the post isn't similar to the edited text in the POST request.");
-        softAssertForChangedTextAndPicture.assertEquals(StepsGenerator.comparePhotos(myProfilePage.getPhotoURL(postId.getResponse().getPost_id()),
-                        System.getProperty("user.dir") + jsonSettings.getValue("/pathToUploadedPhoto").toString(),
+        softAssertForChangedTextAndPicture.assertEquals(StepsGenerator.downloadAndComparePhotos(StepsGenerator.getPhotoURL(postForm, postId.getResponse().getPost_id()),
                         System.getProperty("user.dir") + jsonSettings.getValue("/pathToUploadedPhoto").toString(),
                         System.getProperty("user.dir") + jsonSettings.getValue("/pathToUploadedPhoto").toString()),
                 ImageComparisonState.MATCH, "Pictures aren't similar.");
@@ -76,12 +77,12 @@ public class VKTest extends CommonConditions {
         CommentId commentId = APIApplicationRequest.createCommentOnPost(randomlyGeneratedComment, postId.getResponse().getPost_id());
 
         logger.info("Step 9: without page refreshment make sure that the comment from certain user is added to the required post.");
-        myProfilePage.clickShowNextCommentButton(jsonSettings.getValue("/ownerId").toString(), postId.getResponse().getPost_id());
-        Assert.assertEquals(myProfilePage.getCommentOnThePost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id()), randomlyGeneratedComment,
+        postForm.clickShowNextCommentButton(jsonSettings.getValue("/ownerId").toString(), postId.getResponse().getPost_id());
+        Assert.assertEquals(postForm.getCommentOnThePost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id()), randomlyGeneratedComment,
                 "The randomly generated comment from certain user wasn't added to the required post.");
 
         logger.info("Step 10: using UI put like on the post.");
-        myProfilePage.putLikeOnThePost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id());
+        postForm.putLikeOnThePost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id());
 
         logger.info("Step 11: through API request make sure that the post has got like from required user.");
         Reaction reaction = APIApplicationRequest.checkIfThePostIsLiked(postId.getResponse().getPost_id());
@@ -91,7 +92,7 @@ public class VKTest extends CommonConditions {
         APIApplicationRequest.deleteResponse(postId.getResponse().getPost_id());
 
         logger.info("Step 13: without page refreshment make sure that the post is deleted.");
-        Assert.assertTrue(myProfilePage.getDeletedPost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id())
+        Assert.assertTrue(postForm.getDeletedPost(jsonSettings.getValue("/ownerId").toString(), commentId.getResponse().getComment_id())
                 .state().waitForDisplayed(), "Post isn't deleted.");
     }
 }
